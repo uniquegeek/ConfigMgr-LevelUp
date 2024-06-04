@@ -1,4 +1,4 @@
-#Katherine Scrupa 20240604
+#uniquegeek 20240604
 #This script automatically repairs and installs sysmon with a config of your choosing.
 #  If sysmon is baked, it needs to be uninstalled in two parts with a reboot in between.
 #  Then you can install sysmon properly.
