@@ -1,3 +1,4 @@
+#uniqeugeek 20240531
 #Set what version of New Teams are we installing. (~20240531)
 #Get version by installing once then using "Get-AppxPackage -AllUsers MSTeams | fl *"
 [system.version]$installerVer = "24074.2321.2810.3500"
