@@ -3,7 +3,7 @@
 #=== Directions: ===
 #copy selection from CM console
 #paste in excel
-#copy the column of computer names
+#copy the cells that have computer names
 #paste in $str between the ""
 #run the rest of the script
 
