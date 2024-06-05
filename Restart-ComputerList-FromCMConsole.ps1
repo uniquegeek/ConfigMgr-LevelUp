@@ -12,7 +12,7 @@ comp2
 comp3
 "
 
-$computers = (([string]::join("=",($str.Split("`n")))) -split "=").trim()
+$computers = ($str.Split("`n")).trim()
 #does not restart if someone is logged in
 foreach ($computer in $computers) { 
     if ($computer -ne "") {
