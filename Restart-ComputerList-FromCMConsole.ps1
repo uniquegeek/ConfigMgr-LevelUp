@@ -5,7 +5,7 @@
 #paste in excel
 #copy the column of computer names
 #paste in $str between the ""
-#run the rest  of the scrips
+#run the rest of the script
 
 $str = "comp1
 comp2
