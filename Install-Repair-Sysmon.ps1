@@ -139,7 +139,7 @@ if ($CurrSysmonSvc -ne $null) {
     $sysSvcExist = "sysmon64 service"
     $sysStart = $CurrSysmonSvc.StartMode
 }
-if (($sysSvcExist -ne "none") -and ($sysStart -eq "unknown") -and ($sysSvcConfigFile -eq "none")) {
+if (($sysSvcExist -ne "none") -and ($sysStart -eq "none") -and ($sysSvcConfigFile -eq "none")) {
     #=== BORKED SYSMON FIX 
     #Then, after a reboot, you can delete C:\Windows\SysmonDrv.sys (and C:\Windows\Sysmon64.exe if you haven’t already).
     #maybe don't need a reboot??? testing that here
