@@ -56,7 +56,7 @@ if (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Control\WMI\Autologger\EventLog-Mi
 #$output = $output -join ","
 #write-host $output
 
-if (($sysPath -eq 'C:\windows\Sysmon64.exe') -and ($sysState -ne "none") -and ($sysSvcConfigFile -ne $targetConfig)) {
+if ((($sysState -ne "none") -and ($sysSvcConfigFile -ne $targetConfig)) {
 	$continueInstallFix = $true
 }
 #sysState becomes none AFTER this script runs, that is a task for uninstall-part2
