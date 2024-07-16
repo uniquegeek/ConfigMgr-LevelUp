@@ -51,7 +51,7 @@ $e | foreach {
     $followingreason = $followingreason.Trim()
 
     #Write-Host $h","$t","$followingreason","$shutdowntype","$reasoncode","$u
-    $output = $output + $shutdowntype + $reasoncode + $u + $followingreason
+    $output = $output + $t + $shutdowntype + $reasoncode + $u + $followingreason
 
 }
 
