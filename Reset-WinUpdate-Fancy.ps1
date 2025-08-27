@@ -1,10 +1,17 @@
 #uniquegeek@gmail.com
-# Stops windows update service and renames c:\SoftwareDistribution to .old
-# Very similar to Microsoft script, but checks whether installers are running first
-# Won't delete folder (can't) while installers are running.
-# Helps fix corrupt windows updates / those signed with a cert we don't have anymore
+# Helps fix corrupt windows updates / those signed with a cert we don't have anymore.
+#    Stops windows update services and renames c:\SoftwareDistribution to .old
+#    Very similar to Microsoft script, but checks whether installers are running first,
+#    because it won't delete folder (can't!) while installers are running!
+# If C:\SoftwareDistribution refuses to rename after multiple tries
+#   try making your local admin account the OWNER of that folder first (including children),
+#   make sure that account has Full Control,
+#   then try this script again
 
-$gpFolderTargetDays = 60 #delete GroupPolicy folder if older than these many days
+#delete GroupPolicy folder if older than these many days, sometimes these are borked too
+#If GroupPolicy and GroupPolicyUsers folders are deleted, 
+#whatever you have automated will replace them after you run gpupdate again
+$gpFolderTargetDays = 60 
 $targetDate = Get-Date
 #$targetDate = Get-Date -Day 1 -Month 1 -Year 2023  #or choose a specific date
 
@@ -25,10 +32,10 @@ if (-not($installerRunning)) {
     $SoftwarePathDate = (Get-Item $SoftwarePath).LastWriteTime
     if (-not($SoftwarePathDate)) { $SoftwarePathDate = Get-Date -Year 2000 }
 
-    #old zenworks user-side GPO gpedit.msc not needed and can interfere
+    #user-side GPO gpedit.msc not needed and can interfere
     if (Test-Path $gpUserFolder) { Remove-Item $gpUserFolder -Force -Recurse }
     
-    # stop services if running 
+    #stop services if running
     #check if SoftwareDistribution is dead
     #may have been caused by a certificate issue with SCCM when we were troubleshooting patches in 2021
     if ((Test-Path $SoftwarePath) -and ($SoftwarePathDate -lt $targetDate)) { 
@@ -49,6 +56,7 @@ if (-not($installerRunning)) {
                 if (($today - $gpFolderDate).Days -gt $gpFolderTargetDays) {
                     Remove-Item $gpFolder -Force -recurse
                     cmd.exe /c "GPUPDATE /force /target:user > NUL 2>&1"
+                    #you may need to reboot to get some policies back that matter right now
                 }
             }
         }
@@ -96,11 +104,12 @@ if (-not($softChecks)){
     write-host "No c:\Windows\SoftwareDistribution* folders"
 }
 
-#if (Test-Path C:\windows\SoftwareDistribution.old) {
-#    Remove-Item C:\windows\SoftwareDistribution.old -Recurse -Force
-#} #won't work without permissions / ownership issues, ignore for now
-
 if ($installerRunning) {
     write-host "Can't reset windows update folder while installers are running, try again later."
     $installerRunning
 }
+
+#Caveats:
+#may need to reboot if script sucessful, then try again (get current grouppolicy)
+#may need to click the "Check for updates from Microsoft Update, then click the "Retry" button before it will work
+#may need to take ownership of SoftwareDistribution folder before this script will work (rare)
